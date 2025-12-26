@@ -1,271 +1,593 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FinSeed — Early Access</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinSeed — Educación financiera para niños y familias</title>
+    <meta name="description" content="FinSeed enseña a niños y adolescentes a entender el dinero, invertir con criterio y crear hábitos financieros sólidos, junto a sus familias." />
+    <meta name="theme-color" content="#0B0F1A" />
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Open Graph -->
+    <meta property="og:title" content="FinSeed — Educación financiera para niños y familias" />
+    <meta property="og:description" content="Aprendizaje gamificado, simulación sin riesgo e inversión gradual con control parental." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://finseed.cl" />
 
-  <style>
-    :root{
-      --seed-green-50: #f6fffa;
-      --seed-green-100: #ecfdf5;
-      --seed-green-200: #d1fae5;
-      --seed-green-300: #a7f3d0;
-      --seed-green-500: #10b981;
-      --seed-green-600: #059669;
-      --seed-green-700: #047857;
-      --seed-olive: #065f46;
-    }
+    <!-- Tailwind (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica", "Arial"],
+            },
+            colors: {
+              fin: {
+                bg: "#0B0F1A",
+                panel: "#101826",
+                line: "rgba(255,255,255,0.10)",
+                soft: "rgba(255,255,255,0.06)",
+                mint: "#34D399",
+                sky: "#60A5FA",
+                pink: "#F472B6",
+                amber: "#F59E0B",
+              },
+            },
+            boxShadow: {
+              glow: "0 0 0 1px rgba(255,255,255,0.08), 0 20px 60px rgba(0,0,0,0.55)",
+            },
+          },
+        },
+      };
+    </script>
 
-    .bg-grid {
-      background-image: radial-gradient(circle at 1px 1px, rgba(6,95,70,0.04) 1px, transparent 0);
-      background-size: 22px 22px;
-    }
-    .glass {
-      background: rgba(255,255,255,0.8);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(6,95,70,0.06);
-    }
+    <style>
+      html { scroll-behavior: smooth; }
+      .glass {
+        background: rgba(16, 24, 38, 0.65);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.10);
+      }
+      .gridGlow:before{
+        content:"";
+        position:absolute; inset:0;
+        background:
+          radial-gradient(800px 400px at 15% 10%, rgba(96,165,250,0.20), transparent 60%),
+          radial-gradient(700px 350px at 85% 20%, rgba(244,114,182,0.16), transparent 60%),
+          radial-gradient(800px 500px at 50% 85%, rgba(52,211,153,0.14), transparent 60%),
+          linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
+        pointer-events:none;
+      }
+      .noise:after{
+        content:"";
+        position:absolute; inset:0;
+        background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+        opacity:.35; mix-blend-mode: overlay; pointer-events:none;
+      }
+    </style>
+  </head>
 
-    /* Seed -> tree animation */
-    .seed-svg { width: 120px; height: 120px; }
+  <body class="bg-fin-bg text-white font-sans">
+    <!-- Top bar -->
+    <header class="sticky top-0 z-40 border-b border-fin-line bg-fin-bg/70 backdrop-blur">
+      <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+        <a href="#top" class="flex items-center gap-2">
+          <div class="h-9 w-9 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center shadow-glow">
+            <span class="text-lg">🌱</span>
+          </div>
+          <div class="leading-tight">
+            <div class="font-semibold">FinSeed</div>
+            <div class="text-xs text-white/60 -mt-0.5">Pilot + Demo</div>
+          </div>
+        </a>
 
-    .germinate { transform-origin: 50% 100%; animation: germinate 3s ease-in-out forwards; }
-    .grow-delay-1 { animation-delay: 0.6s; }
-    .grow-delay-2 { animation-delay: 1.6s; }
-    .grow-delay-3 { animation-delay: 2.4s; }
+        <nav class="hidden md:flex items-center gap-6 text-sm text-white/70">
+          <a class="hover:text-white" href="#problema">Problema</a>
+          <a class="hover:text-white" href="#solucion">Solución</a>
+          <a class="hover:text-white" href="#como-funciona">Cómo funciona</a>
+          <a class="hover:text-white" href="#demo">Demo</a>
+          <a class="hover:text-white" href="#faq">FAQ</a>
+        </nav>
 
-    @keyframes germinate {
-      0% { transform: scale(0.2) translateY(18px); opacity: 0; }
-      25% { transform: scale(0.6) translateY(6px); opacity: 1; }
-      50% { transform: scale(0.9) translateY(0px); }
-      80% { transform: scale(1.06) translateY(-6px); }
-      100% { transform: scale(1) translateY(0px); }
-    }
-
-    /* simple leaf sway */
-    .leaf { transform-origin: 10% 10%; animation: sway 4s ease-in-out infinite; }
-    .leaf.delay { animation-delay: 0.6s; }
-    @keyframes sway {
-      0% { transform: rotate(-6deg); }
-      50% { transform: rotate(6deg); }
-      100% { transform: rotate(-6deg); }
-    }
-
-    /* subtle floating seeds in background */
-    .float-seed { animation: floatUp 9s linear infinite; opacity: 0.95 }
-    .float-seed.s1 { animation-delay: 0s; left: 8%; bottom: 6%; }
-    .float-seed.s2 { animation-delay: 2s; left: 28%; bottom: 3%; }
-    .float-seed.s3 { animation-delay: 5s; left: 64%; bottom: 8%; }
-    @keyframes floatUp {
-      0% { transform: translateY(10px) scale(0.9); opacity: 0.9 }
-      50% { transform: translateY(-18px) scale(1.05); opacity: 1 }
-      100% { transform: translateY(10px) scale(0.9); opacity: 0.9 }
-    }
-
-    /* responsive tweaks */
-    @media (max-width: 640px) {
-      .seed-svg { width: 88px; height: 88px; }
-    }
-  </style>
-</head>
-
-<body class="bg-seed-green-50 text-seed-olive">
-
-<!-- ================= NAV ================= -->
-<header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-seed-green-200">
-  <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white grid place-items-center font-bold">F</div>
-      <div>
-        <div class="font-semibold text-emerald-800">FinSeed</div>
-        <div class="text-xs text-emerald-600">Early Access</div>
-      </div>
-    </div>
-
-    <div class="flex gap-3">
-      <a href="https://finseed-grow-family.lovable.app" target="_blank"
-         class="px-4 py-2 rounded-lg border border-emerald-200 text-sm text-emerald-800 hover:bg-emerald-50">Ver demo</a>
-      <a href="#form"
-         class="px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700">Quiero acceso</a>
-    </div>
-  </div>
-</header>
-
-<!-- ================= HERO ================= -->
-<section class="bg-grid">
-  <div class="relative max-w-6xl mx-auto px-5 pt-16 pb-14 grid lg:grid-cols-2 gap-10 items-center">
-
-    <div>
-      <span class="inline-block px-3 py-1 rounded-full border border-emerald-200 bg-emerald-50 text-sm text-emerald-700">Piloto con cupos limitados</span>
-
-      <h1 class="mt-5 text-4xl md:text-5xl font-bold leading-tight text-emerald-900">
-        Educación financiera e inversión temprana
-        <span class="text-emerald-700"> para niños y familias</span>
-      </h1>
-
-      <p class="mt-5 text-lg text-emerald-700 max-w-xl">
-        FinSeed enseña a niños y adolescentes a entender el dinero, invertir paso a paso
-        y construir hábitos financieros reales, con control parental.
-      </p>
-
-      <div class="mt-7 flex gap-3">
-        <a href="#form" class="px-6 py-3 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Quiero participar del piloto</a>
-        <a href="https://finseed-grow-family.lovable.app" target="_blank" class="px-6 py-3 rounded-xl border border-emerald-200 text-emerald-800 font-semibold hover:bg-emerald-50">Ver demo</a>
-      </div>
-
-      <!-- subtle floating seeds in hero -->
-      <div aria-hidden="true" class="absolute inset-0 pointer-events-none">
-        <svg class="float-seed s1 absolute w-12 h-12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="bottom:12%;">
-          <circle cx="12" cy="12" r="10" fill="#34D399" opacity="0.18" />
-        </svg>
-        <svg class="float-seed s2 absolute w-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="bottom:6%;">
-          <circle cx="12" cy="12" r="9" fill="#10B981" opacity="0.14" />
-        </svg>
-        <svg class="float-seed s3 absolute w-14 h-14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="bottom:18%;">
-          <circle cx="12" cy="12" r="11" fill="#059669" opacity="0.12" />
-        </svg>
-      </div>
-
-    </div>
-
-    <!-- Mock visual with growing seeds -->
-    <div class="glass rounded-2xl p-6 relative">
-      <div class="text-sm text-emerald-600 mb-3">Vista conceptual — Crecimiento de patrimonio</div>
-
-      <div class="grid grid-cols-3 gap-4 items-end">
-        <!-- small seed -> sprout -> tree column -->
-        <div class="flex flex-col items-center gap-3">
-          <!-- Seed SVG (stage 1) -->
-          <svg class="seed-svg germinate grow-delay-1" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <g transform="translate(10,22)">
-              <ellipse cx="40" cy="40" rx="18" ry="12" fill="#065f46" opacity="0.95" />
-              <g class="leaf delay" transform="translate(36,24)">
-                <path d="M0 0 C8 -8, 22 -10, 28 -4 C22 -2, 8 -1, 0 0" fill="#10B981" opacity="0.95"/>
-              </g>
-            </g>
-          </svg>
-
-          <div class="text-xs text-emerald-700">Semilla</div>
-        </div>
-
-        <div class="flex flex-col items-center gap-3">
-          <!-- sprout -->
-          <svg class="seed-svg germinate grow-delay-2" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <g transform="translate(10,8)">
-              <rect x="36" y="46" width="8" height="22" rx="4" fill="#065f46" />
-              <path class="leaf" d="M40 40 C28 26, 10 22, 6 30 C18 28,34 34,40 40" fill="#34D399" />
-              <path class="leaf delay" d="M48 36 C62 24, 82 22, 86 30 C74 28,60 34,48 36" fill="#059669" />
-            </g>
-          </svg>
-          <div class="text-xs text-emerald-700">Brote</div>
-        </div>
-
-        <div class="flex flex-col items-center gap-3">
-          <!-- little tree -->
-          <svg class="seed-svg germinate grow-delay-3" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <g transform="translate(10,2)">
-              <rect x="44" y="56" width="8" height="28" rx="3" fill="#6B4226" />
-              <circle cx="48" cy="36" r="20" fill="#10B981" opacity="0.96" />
-              <path class="leaf" d="M36 30 C28 18, 8 14, 6 22 C18 20,30 26,36 30" fill="#34D399" />
-            </g>
-          </svg>
-          <div class="text-xs text-emerald-700">Árbol</div>
+        <div class="flex items-center gap-2">
+          <button
+            id="btnDemoTop"
+            class="px-4 py-2 rounded-xl bg-white text-fin-bg font-semibold hover:bg-white/90 transition shadow-glow"
+          >
+            Ver demo
+          </button>
         </div>
       </div>
+    </header>
 
-      <div class="mt-6 text-sm text-emerald-600">
-        Simulación de crecimiento: desde la semilla hasta el árbol — así crece el patrimonio con educación y práctica.
+    <!-- Hero -->
+    <main id="top" class="relative overflow-hidden">
+      <section class="relative gridGlow noise">
+        <div class="mx-auto max-w-6xl px-4 py-14 md:py-20 relative">
+          <div class="grid md:grid-cols-2 gap-10 items-center">
+            <div>
+              <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
+                <span class="text-fin-mint">●</span> Cupos limitados para piloto (familias y colegios)
+              </div>
+
+              <h1 class="mt-5 text-4xl md:text-6xl font-bold tracking-tight">
+                Educación financiera real
+                <span class="block text-white/80">para niños y familias</span>
+              </h1>
+
+              <p class="mt-5 text-lg text-white/70 leading-relaxed">
+                FinSeed enseña a niños y adolescentes a entender el dinero, invertir con criterio y crear hábitos financieros sólidos,
+                junto a sus familias.
+              </p>
+
+              <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                <button
+                  id="btnPrimary"
+                  class="px-5 py-3 rounded-xl bg-white text-fin-bg font-semibold hover:bg-white/90 transition shadow-glow"
+                >
+                  Quiero ver el demo (2 min)
+                </button>
+
+                <a
+                  href="#piloto"
+                  class="px-5 py-3 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-white/90"
+                >
+                  Postular al piloto
+                </a>
+              </div>
+
+              <div class="mt-6 flex flex-wrap gap-2 text-sm text-white/70">
+                <span class="px-3 py-1 rounded-full border border-white/10 bg-white/5">🎮 Aprendizaje gamificado</span>
+                <span class="px-3 py-1 rounded-full border border-white/10 bg-white/5">🧪 Simulación sin riesgo</span>
+                <span class="px-3 py-1 rounded-full border border-white/10 bg-white/5">🧭 Control parental</span>
+              </div>
+            </div>
+
+            <!-- Right: “Lovable vibe” cards -->
+            <div class="relative">
+              <div class="glass rounded-3xl p-6 shadow-glow">
+                <div class="flex items-center justify-between">
+                  <div class="text-sm text-white/70">Vista previa (concepto)</div>
+                  <div class="text-xs text-white/50">FinSeed • Demo</div>
+                </div>
+
+                <div class="mt-4 grid gap-3">
+                  <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                    <div class="flex items-center justify-between">
+                      <div class="font-semibold">🌳 Portafolio de Clemente</div>
+                      <div class="text-fin-mint font-semibold">+3.2%</div>
+                    </div>
+                    <div class="mt-2 text-sm text-white/70">
+                      “Mira cómo crece tu árbol de inversiones.”
+                    </div>
+                    <div class="mt-3 h-2 rounded-full bg-white/10 overflow-hidden">
+                      <div class="h-2 bg-fin-mint w-[62%]"></div>
+                    </div>
+                  </div>
+
+                  <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                    <div class="font-semibold">✨ Escribe tu sueño</div>
+                    <div class="mt-2 text-sm text-white/70">
+                      Ej: “Comprar una bicicleta 🚲” y ver el progreso.
+                    </div>
+                    <div class="mt-3 flex gap-2">
+                      <div class="px-3 py-2 rounded-xl bg-white/10 border border-white/10 text-sm w-full text-white/70">Mi sueño es…</div>
+                      <div class="px-4 py-2 rounded-xl bg-fin-sky/90 text-fin-bg font-semibold">Enviar</div>
+                    </div>
+                  </div>
+
+                  <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                    <div class="flex items-center gap-2">
+                      <span class="text-fin-amber">★</span>
+                      <div class="font-semibold">Mis sueños</div>
+                      <span class="text-xs text-white/60">(se guardan)</span>
+                    </div>
+                    <div class="mt-2 text-sm text-white/70">
+                      La app transforma sueños en metas y hábitos.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-5 flex gap-3">
+                  <button id="btnDemoCard" class="w-full px-4 py-3 rounded-xl bg-white text-fin-bg font-semibold hover:bg-white/90 transition">
+                    Probar demo ahora
+                  </button>
+                </div>
+
+                <p class="mt-3 text-xs text-white/50">
+                  *Esta landing es para captar early adopters y derivarlos al demo.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sections -->
+      <section id="problema" class="mx-auto max-w-6xl px-4 py-14">
+        <div class="grid md:grid-cols-2 gap-8 items-start">
+          <div>
+            <h2 class="text-2xl md:text-3xl font-bold">El problema</h2>
+            <p class="mt-3 text-white/70 leading-relaxed">
+              En el colegio no se enseña educación financiera real. Los niños aprenden tarde (o aprenden mal).
+              Y muchos padres no saben cómo enseñar inversión sin riesgo.
+            </p>
+          </div>
+          <div class="grid gap-3">
+            <div class="glass rounded-2xl p-5">
+              <div class="font-semibold">😵 Falta de método</div>
+              <div class="mt-1 text-white/70 text-sm">Información dispersa y sin guía práctica.</div>
+            </div>
+            <div class="glass rounded-2xl p-5">
+              <div class="font-semibold">🧨 Riesgo y ansiedad</div>
+              <div class="mt-1 text-white/70 text-sm">Invertir “a ciegas” genera miedo o errores.</div>
+            </div>
+            <div class="glass rounded-2xl p-5">
+              <div class="font-semibold">📉 Sin hábitos</div>
+              <div class="mt-1 text-white/70 text-sm">No hay rutina: ahorrar, planificar, constancia.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="solucion" class="mx-auto max-w-6xl px-4 pb-14">
+        <div class="glass rounded-3xl p-8 md:p-10 shadow-glow">
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center">✅</div>
+            <h2 class="text-2xl md:text-3xl font-bold">La solución</h2>
+          </div>
+
+          <div class="mt-6 grid md:grid-cols-3 gap-4">
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
+              <div class="text-lg font-semibold">🎮 Gamificación</div>
+              <p class="mt-2 text-white/70 text-sm">Aprender con misiones, progreso y motivación.</p>
+            </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
+              <div class="text-lg font-semibold">🧪 Simulación sin riesgo</div>
+              <p class="mt-2 text-white/70 text-sm">Practicar antes de invertir de verdad.</p>
+            </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
+              <div class="text-lg font-semibold">🧭 Control parental</div>
+              <p class="mt-2 text-white/70 text-sm">Inversión gradual y acompañada por la familia.</p>
+            </div>
+          </div>
+
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <button id="btnPrimary2" class="px-5 py-3 rounded-xl bg-white text-fin-bg font-semibold hover:bg-white/90 transition">
+              Ver demo (sin instalar nada)
+            </button>
+            <a href="#piloto" class="px-5 py-3 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition">
+              Postular al piloto
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="como-funciona" class="mx-auto max-w-6xl px-4 pb-14">
+        <h2 class="text-2xl md:text-3xl font-bold">Cómo funciona</h2>
+        <p class="mt-2 text-white/70">La misma lógica que verás en el demo (Lovable).</p>
+
+        <div class="mt-6 grid md:grid-cols-3 gap-4">
+          <div class="glass rounded-2xl p-6">
+            <div class="text-sm text-white/60">Paso 1</div>
+            <div class="mt-2 font-semibold text-lg">Definir un sueño</div>
+            <p class="mt-2 text-white/70 text-sm">“Mi sueño es…” (ej: bicicleta, viaje, consola).</p>
+          </div>
+          <div class="glass rounded-2xl p-6">
+            <div class="text-sm text-white/60">Paso 2</div>
+            <div class="mt-2 font-semibold text-lg">Simular y aprender</div>
+            <p class="mt-2 text-white/70 text-sm">Portafolio virtual + hábitos + misiones.</p>
+          </div>
+          <div class="glass rounded-2xl p-6">
+            <div class="text-sm text-white/60">Paso 3</div>
+            <div class="mt-2 font-semibold text-lg">Invertir con control</div>
+            <p class="mt-2 text-white/70 text-sm">Gradual y acompañado (familia/colegio).</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="demo" class="mx-auto max-w-6xl px-4 pb-14">
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 class="text-2xl md:text-3xl font-bold">Demo interactivo</h2>
+            <p class="mt-3 text-white/70 leading-relaxed">
+              Si te interesa de verdad, entra al demo: en 2 minutos vas a entender el concepto completo.
+            </p>
+            <ul class="mt-4 space-y-2 text-white/70">
+              <li>✅ Diseñado para niños, padres y colegios</li>
+              <li>✅ Visual: metas, sueños, progreso y “árbol”</li>
+              <li>✅ Enfoque educativo (no promesas irreales)</li>
+            </ul>
+            <div class="mt-6 flex gap-3">
+              <button id="btnDemoSection" class="px-5 py-3 rounded-xl bg-white text-fin-bg font-semibold hover:bg-white/90 transition">
+                Abrir demo ahora
+              </button>
+              <button id="btnLeadOnly" class="px-5 py-3 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition">
+                Solo dejar mis datos
+              </button>
+            </div>
+          </div>
+
+          <div class="glass rounded-3xl p-6 shadow-glow">
+            <div class="text-sm text-white/70">Lo que obtienes al ser early user</div>
+            <div class="mt-4 grid gap-3">
+              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                <div class="font-semibold">🎁 Acceso preferente</div>
+                <div class="text-sm text-white/70 mt-1">Cupos limitados y onboarding guiado.</div>
+              </div>
+              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                <div class="font-semibold">🧠 Feedback directo</div>
+                <div class="text-sm text-white/70 mt-1">Tu opinión define el producto final.</div>
+              </div>
+              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                <div class="font-semibold">🏫 Pilotos con colegios</div>
+                <div class="text-sm text-white/70 mt-1">Versión educativa para instituciones.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="piloto" class="mx-auto max-w-6xl px-4 pb-14">
+        <div class="glass rounded-3xl p-8 md:p-10">
+          <h2 class="text-2xl md:text-3xl font-bold">Piloto FinSeed</h2>
+          <p class="mt-2 text-white/70">
+            Estamos abriendo cupos limitados para familias y colegios que quieran participar en el piloto inicial.
+          </p>
+
+          <div class="mt-6 grid md:grid-cols-2 gap-6">
+            <!-- Option A: Inline form (local storage + redirect) -->
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-6">
+              <div class="font-semibold text-lg">Deja tus datos (rápido)</div>
+              <p class="text-sm text-white/70 mt-1">Te redirigimos al demo después de enviar.</p>
+
+              <form id="leadForm" class="mt-4 space-y-3">
+                <div>
+                  <label class="text-xs text-white/60">Nombre</label>
+                  <input id="name" class="mt-1 w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-white/30" placeholder="Ej: Clemente Barella" required />
+                </div>
+                <div>
+                  <label class="text-xs text-white/60">Email</label>
+                  <input id="email" type="email" class="mt-1 w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-white/30" placeholder="tu@email.com" required />
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="text-xs text-white/60">Rol</label>
+                    <select id="role" class="mt-1 w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-white/30">
+                      <option>Padre / Madre</option>
+                      <option>Estudiante</option>
+                      <option>Colegio</option>
+                      <option>Otro</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="text-xs text-white/60">Edad del hijo/a</label>
+                    <input id="kidAge" type="number" min="4" max="18" class="mt-1 w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-white/30" placeholder="8 - 18" />
+                  </div>
+                </div>
+
+                <button class="w-full px-5 py-3 rounded-xl bg-white text-fin-bg font-semibold hover:bg-white/90 transition" type="submit">
+                  Enviar y entrar al demo
+                </button>
+
+                <p class="text-xs text-white/50">
+                  Al enviar, aceptas ser contactado/a para el piloto. No vendemos tus datos.
+                </p>
+              </form>
+            </div>
+
+            <!-- Option B: Google Form embed (immediate spreadsheet capture) -->
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-6">
+              <div class="font-semibold text-lg">Registro oficial (Google Form)</div>
+              <p class="text-sm text-white/70 mt-1">
+                Esto guarda respuestas directo en tu Google Sheets.
+              </p>
+
+              <!-- Replace with your “embed” link if you want.
+                   Current link: you shared viewform. Embed normally is /viewform?embedded=true
+              -->
+              <div class="mt-4 overflow-hidden rounded-2xl border border-white/10">
+                <iframe
+                  title="Registro Piloto FinSeed"
+                  src="https://docs.google.com/forms/d/e/1FAIpQLScffbTvQpp_UMiCGRhiI36f4kHkeG3riBNpgLqx1Mq4217Y7Q/viewform?embedded=true"
+                  width="100%"
+                  height="520"
+                  frameborder="0"
+                  marginheight="0"
+                  marginwidth="0"
+                  class="bg-white"
+                >
+                  Cargando…
+                </iframe>
+              </div>
+
+              <div class="mt-4">
+                <button id="btnDemoAfterForm" class="w-full px-5 py-3 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition">
+                  Ya me registré → abrir demo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="mx-auto max-w-6xl px-4 pb-16">
+        <h2 class="text-2xl md:text-3xl font-bold">Preguntas frecuentes</h2>
+        <div class="mt-6 grid md:grid-cols-2 gap-4">
+          <details class="glass rounded-2xl p-6">
+            <summary class="cursor-pointer font-semibold">¿Esto es inversión real?</summary>
+            <p class="mt-2 text-white/70 text-sm">El demo es educativo. La idea final combina aprendizaje + control parental + gradualidad.</p>
+          </details>
+          <details class="glass rounded-2xl p-6">
+            <summary class="cursor-pointer font-semibold">¿Sirve para colegios?</summary>
+            <p class="mt-2 text-white/70 text-sm">Sí: el piloto incluye opción para colegios interesados en educación financiera moderna.</p>
+          </details>
+          <details class="glass rounded-2xl p-6">
+            <summary class="cursor-pointer font-semibold">¿Qué edad recomienda?</summary>
+            <p class="mt-2 text-white/70 text-sm">Enfoque principal: 8 a 18 años (con acompañamiento de familia).</p>
+          </details>
+          <details class="glass rounded-2xl p-6">
+            <summary class="cursor-pointer font-semibold">¿Qué pasa con mis datos?</summary>
+            <p class="mt-2 text-white/70 text-sm">Solo para contacto del piloto. Puedes pedir eliminación cuando quieras.</p>
+          </details>
+        </div>
+      </section>
+
+      <footer class="border-t border-fin-line">
+        <div class="mx-auto max-w-6xl px-4 py-10 flex flex-col md:flex-row gap-4 md:items-center md:justify-between text-sm text-white/60">
+          <div>© <span id="year"></span> FinSeed — Pilot & Demo</div>
+          <div class="flex gap-4">
+            <a class="hover:text-white" href="#top">Volver arriba</a>
+            <a class="hover:text-white" href="#piloto">Piloto</a>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <!-- Lead Modal -->
+    <div id="modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+      <div id="modalBg" class="absolute inset-0 bg-black/70"></div>
+      <div class="relative w-[92%] max-w-xl glass rounded-3xl p-6 shadow-glow">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="text-xs text-white/60">Acceso anticipado</div>
+            <div class="text-xl font-bold mt-1">Entra al demo (y guarda tu cupo)</div>
+            <div class="text-sm text-white/70 mt-1">Déjanos tus datos y te mandamos prioridad para el piloto.</div>
+          </div>
+          <button id="closeModal" class="h-10 w-10 rounded-xl bg-white/10 border border-white/10 hover:bg-white/15">✕</button>
+        </div>
+
+        <form id="modalForm" class="mt-4 space-y-3">
+          <div>
+            <label class="text-xs text-white/60">Nombre</label>
+            <input id="mName" class="mt-1 w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-white/30" placeholder="Ej: Clemente" required />
+          </div>
+          <div>
+            <label class="text-xs text-white/60">Email</label>
+            <input id="mEmail" type="email" class="mt-1 w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-white/30" placeholder="tu@email.com" required />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-xs text-white/60">Rol</label>
+              <select id="mRole" class="mt-1 w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-white/30">
+                <option>Padre / Madre</option>
+                <option>Estudiante</option>
+                <option>Colegio</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-xs text-white/60">Edad hijo/a</label>
+              <input id="mKidAge" type="number" min="4" max="18" class="mt-1 w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-white/30" placeholder="8 - 18" />
+            </div>
+          </div>
+
+          <button class="w-full px-5 py-3 rounded-xl bg-white text-fin-bg font-semibold hover:bg-white/90 transition" type="submit">
+            Enviar y abrir demo
+          </button>
+
+          <p class="text-xs text-white/50">
+            No vendemos datos. Solo contacto para el piloto.
+          </p>
+        </form>
       </div>
     </div>
 
-  </div>
-</section>
+    <script>
+      const DEMO_URL = "https://finseed-grow-family.lovable.app";
 
-<!-- ================= FORM ================= -->
-<section id="form" class="py-20 bg-seed-green-100 text-seed-olive">
-  <div class="max-w-2xl mx-auto px-5">
+      // OPTIONAL: if you later create a tracking endpoint (Google Apps Script / server), put it here.
+      // Leave empty to disable.
+      const TRACK_ENDPOINT = ""; // e.g. "https://script.google.com/macros/s/XXXX/exec"
 
-    <h2 class="text-3xl font-bold text-center text-emerald-900">Acceso anticipado al piloto</h2>
-    <p class="text-emerald-700 mt-2 text-center">Déjanos tus datos y te contactaremos para participar.</p>
+      const $ = (id) => document.getElementById(id);
 
-    <div class="mt-10 bg-white/70 border border-emerald-200 rounded-2xl p-6">
-      <!-- FORM CONNECTED TO GOOGLE FORMS -->
-      <form
-        action="https://docs.google.com/forms/d/e/TU_FORM_ID_AQUI/formResponse"
-        method="POST"
-        target="hidden_iframe"
-        onsubmit="return handleSubmit();"
-        class="grid md:grid-cols-2 gap-3"
-      >
+      function openModal() {
+        $("modal").classList.remove("hidden");
+        $("modal").classList.add("flex");
+      }
+      function closeModal() {
+        $("modal").classList.add("hidden");
+        $("modal").classList.remove("flex");
+      }
 
-        <input name="entry.ENTRY_NOMBRE" type="text" placeholder="Nombre"
-               class="px-4 py-3 rounded-xl text-emerald-900" required>
+      function safeJSONParse(v) { try { return JSON.parse(v); } catch { return null; } }
 
-        <input name="entry.ENTRY_EMAIL" type="email" placeholder="Email"
-               class="px-4 py-3 rounded-xl text-emerald-900" required>
+      function saveLead(lead) {
+        const key = "finseed_leads";
+        const existing = safeJSONParse(localStorage.getItem(key)) || [];
+        existing.unshift({ ...lead, createdAt: new Date().toISOString() });
+        localStorage.setItem(key, JSON.stringify(existing));
+      }
 
-        <select name="entry.ENTRY_ROL" class="px-4 py-3 rounded-xl text-emerald-900">
-          <option value="Padre / Madre">Padre / Madre</option>
-          <option value="Colegio">Colegio</option>
-          <option value="Otro">Otro</option>
-        </select>
+      async function track(eventName, payload = {}) {
+        if (!TRACK_ENDPOINT) return;
+        try {
+          await fetch(TRACK_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ event: eventName, ...payload, ts: Date.now(), page: location.href }),
+            mode: "no-cors",
+          });
+        } catch {}
+      }
 
-        <input name="entry.ENTRY_EDAD" type="text" placeholder="Edad de tu hijo/a (o curso)"
-               class="px-4 py-3 rounded-xl text-emerald-900">
+      function goToDemo() {
+        // small delay so user perceives confirmation
+        setTimeout(() => { window.location.href = DEMO_URL; }, 350);
+      }
 
-        <textarea name="entry.ENTRY_INTERES" placeholder="¿Qué te gustaría que tu hijo/a aprenda sobre dinero e inversión?"
-                  class="px-4 py-3 rounded-xl text-emerald-900 md:col-span-2" rows="3"></textarea>
+      function bindLeadForm(formId, map) {
+        const form = $(formId);
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const lead = map();
+          saveLead(lead);
+          await track("lead_submitted", lead);
+          goToDemo();
+        });
+      }
 
-        <button type="submit" class="md:col-span-2 w-full px-6 py-3 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700">Quiero participar en el piloto</button>
-
-        <p class="md:col-span-2 text-xs text-emerald-700 text-center">No spam. Te contactaremos solo para el piloto.</p>
-
-        <div id="successMsg" class="hidden md:col-span-2 text-center text-emerald-800 font-semibold">✅ ¡Listo! Recibimos tus datos.</div>
-
-      </form>
-
-      <iframe name="hidden_iframe" style="display:none;"></iframe>
-    </div>
-  </div>
-</section>
-
-<!-- ================= FOOTER ================= -->
-<footer class="py-8 border-t border-seed-green-200 text-center text-sm text-emerald-600">
-  © <span id="year"></span> FinSeed
-</footer>
-
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-
-  function handleSubmit() {
-    setTimeout(() => {
-      const el = document.getElementById("successMsg");
-      if (el) el.classList.remove("hidden");
-    }, 300);
-    return true;
-  }
-
-  // optional: replay germination if user scrolls back
-  if ('IntersectionObserver' in window) {
-    const items = document.querySelectorAll('.germinate');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.remove('paused');
-          // trigger reflow to replay animation
-          entry.target.style.animation = 'none';
-          entry.target.offsetHeight; // eslint-disable-line
-          entry.target.style.animation = '';
-        }
+      // Buttons -> modal
+      ["btnPrimary","btnPrimary2","btnDemoTop","btnDemoCard","btnDemoSection","btnLeadOnly"].forEach((id) => {
+        const el = $(id);
+        if (el) el.addEventListener("click", openModal);
       });
-    }, { threshold: 0.5 });
-    items.forEach(i => io.observe(i));
-  }
-</script>
 
-</body>
+      // direct demo after google form
+      $("btnDemoAfterForm")?.addEventListener("click", async () => {
+        await track("demo_opened_after_google_form");
+        window.location.href = DEMO_URL;
+      });
+
+      // Modal close
+      $("closeModal").addEventListener("click", closeModal);
+      $("modalBg").addEventListener("click", closeModal);
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+      // Forms
+      bindLeadForm("leadForm", () => ({
+        name: $("name").value.trim(),
+        email: $("email").value.trim(),
+        role: $("role").value,
+        kidAge: $("kidAge").value ? Number($("kidAge").value) : null,
+        source: "inline_form",
+      }));
+
+      bindLeadForm("modalForm", () => ({
+        name: $("mName").value.trim(),
+        email: $("mEmail").value.trim(),
+        role: $("mRole").value,
+        kidAge: $("mKidAge").value ? Number($("mKidAge").value) : null,
+        source: "modal",
+      }));
+
+      // Year
+      $("year").textContent = new Date().getFullYear();
+
+      // Track demo interest
+      track("page_view");
+    </script>
+  </body>
 </html>
