@@ -688,11 +688,21 @@
         });
       }
 
-      // Buttons -> modal
-      ["btnPrimary","btnPrimary2","btnDemoTop","btnDemoCard","btnDemoSection","btnLeadOnly"].forEach((id) => {
+      // --- Updated behavior: demo buttons redirect directly to LOVABLE ---
+      const demoButtons = ["btnPrimary","btnPrimary2","btnDemoTop","btnDemoCard","btnDemoSection"];
+      demoButtons.forEach(id => {
         const el = $(id);
-        if (el) el.addEventListener("click", openModal);
+        if (!el) return;
+        el.addEventListener("click", async (e) => {
+          // optional tracking event
+          await track("demo_opened_via_button", { source: id });
+          // direct redirect
+          window.location.href = DEMO_URL;
+        });
       });
+
+      // keep "Solo dejar mis datos" as the registration flow (opens modal)
+      $("btnLeadOnly")?.addEventListener("click", openModal);
 
       // direct demo after google form
       $("btnDemoAfterForm")?.addEventListener("click", async () => {
@@ -725,7 +735,7 @@
       // Year
       $("year").textContent = new Date().getFullYear();
 
-      // Track demo interest
+      // Track demo interest / page view
       track("page_view");
 
       // Animation: trigger seed/tree growth when visible
