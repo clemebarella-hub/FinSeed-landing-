@@ -59,11 +59,61 @@
           linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
         pointer-events:none;
       }
+      /* simplified noise overlay (lightweight) */
       .noise:after{
         content:"";
         position:absolute; inset:0;
-        background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
         opacity:.35; mix-blend-mode: overlay; pointer-events:none;
+      }
+
+      /* Seed / tree visuals */
+      .seeds-wrap { display:flex; gap:1rem; align-items:flex-end; justify-content:center; }
+      .seed-card { width:48%; min-width:240px; position:relative; padding:1rem; }
+      .seed-visual { height:220px; display:flex; align-items:flex-end; justify-content:center; position:relative; }
+      .seed {
+        width:64px; height:64px; border-radius:999px; background: linear-gradient(180deg,#5A8AFF,#2E4CFF);
+        display:flex; align-items:center; justify-content:center; color:white; font-size:22px;
+        transform-origin:50% 100%;
+        transition: transform 700ms cubic-bezier(.2,.9,.2,1), opacity 350ms;
+        opacity:0;
+      }
+      .trunk {
+        position:absolute; bottom:48px; width:12px; height:0; background:linear-gradient(#8B5A2B,#5C3A21);
+        border-radius:6px; left:50%; transform:translateX(-50%); transform-origin:bottom;
+      }
+      .branches {
+        position:absolute; bottom:calc(48px + 2px); opacity:0; transform:scale(0.6);
+        transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.9,.2,1);
+      }
+      .leaf {
+        width:40px; height:24px; background:linear-gradient(180deg,#34D399,#10B981); border-radius:20px;
+        transform-origin:center; opacity:0;
+      }
+
+      /* portfolio growth animation (bars + coins) */
+      .portfolio-bars { display:flex; gap:6px; align-items:flex-end; height:60px; margin-top:8px; }
+      .bar { width:12px; background:linear-gradient(180deg,#60A5FA,#2563EB); height:0; border-radius:6px; transition:height 900ms cubic-bezier(.2,.9,.2,1); }
+      .coin { display:inline-block; margin-left:6px; opacity:0; transform:translateY(6px); transition:opacity 400ms, transform 400ms; }
+
+      /* trigger classes */
+      .grow .seed { transform: translateY(-14px) scale(1.08); opacity:1; }
+      .grow .trunk { height:84px; }
+      .grow .branches { opacity:1; transform:scale(1); }
+      .grow .leaf { opacity:1; transform:translateY(0); }
+      .grow .bar.h1 { height:28px; }
+      .grow .bar.h2 { height:42px; }
+      .grow .bar.h3 { height:56px; }
+      .grow .coin { opacity:1; transform:translateY(0); }
+
+      /* captions */
+      .seed-caption { margin-top:10px; text-align:center; color:rgba(255,255,255,0.75); font-size:0.95rem; }
+
+      @media (min-width: 768px) {
+        .seed-visual { height:260px; }
+        .seed { width:72px; height:72px; font-size:26px; }
+        .trunk { width:14px; }
+        .bar { width:14px; }
       }
     </style>
   </head>
@@ -121,6 +171,13 @@
                 junto a sus familias.
               </p>
 
+              <!-- New messaging: jóvenes y el efecto de comenzar con capital -->
+              <p class="mt-4 text-md text-white/70 leading-relaxed">
+                Muchas personas jóvenes nos cuentan que, al entrar a la edad adulta, les habría cambiado la vida
+                si sus padres hubiesen tenido un portafolio —aunque pequeño—, diversificado y con alguna orientación.
+                Un inicio con capital y hábitos da tiempo para aprender, equivocarse en pequeño y aprovechar el interés compuesto.
+              </p>
+
               <div class="mt-8 flex flex-col sm:flex-row gap-3">
                 <button
                   id="btnPrimary"
@@ -144,7 +201,7 @@
               </div>
             </div>
 
-            <!-- Right: “Lovable vibe” cards -->
+            <!-- Right: “Lovable vibe” cards + animated seeds -->
             <div class="relative">
               <div class="glass rounded-3xl p-6 shadow-glow">
                 <div class="flex items-center justify-between">
@@ -189,6 +246,74 @@
                   </div>
                 </div>
 
+                <!-- Animated seeds: experiencia vs patrimonio -->
+                <div class="mt-6 border-t border-white/6 pt-4">
+                  <div class="text-sm text-white/60 mb-3">Ver cómo crece: experiencia vs patrimonio</div>
+
+                  <div id="seeds" class="seeds-wrap">
+                    <!-- Seed 1: experiencia financiera (juego) -->
+                    <div class="seed-card">
+                      <div class="seed-visual">
+                        <div class="trunk"></div>
+                        <div class="seed" aria-hidden="true">🎮</div>
+
+                        <svg class="branches" width="160" height="120" viewBox="0 0 160 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="pointer-events:none;">
+                          <!-- left leaf -->
+                          <g transform="translate(30,20)">
+                            <ellipse class="leaf" cx="0" cy="0" rx="22" ry="12" fill="url(#g1)"></ellipse>
+                          </g>
+                          <!-- right leaf -->
+                          <g transform="translate(130,20)">
+                            <ellipse class="leaf" cx="0" cy="0" rx="22" ry="12" fill="url(#g1)"></ellipse>
+                          </g>
+                          <defs>
+                            <linearGradient id="g1" x1="0" x2="1">
+                              <stop offset="0" stop-color="#34D399" />
+                              <stop offset="1" stop-color="#10B981" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                      </div>
+                      <div class="seed-caption">Experiencia financiera — juegos y misiones</div>
+                    </div>
+
+                    <!-- Seed 2: patrimonio real (portafolio) -->
+                    <div class="seed-card">
+                      <div class="seed-visual">
+                        <div class="trunk"></div>
+                        <div class="seed" aria-hidden="true">🌱</div>
+
+                        <svg class="branches" width="160" height="120" viewBox="0 0 160 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="pointer-events:none;">
+                          <g transform="translate(30,20)">
+                            <ellipse class="leaf" cx="0" cy="0" rx="22" ry="12" fill="url(#g2)"></ellipse>
+                          </g>
+                          <g transform="translate(130,20)">
+                            <ellipse class="leaf" cx="0" cy="0" rx="22" ry="12" fill="url(#g2)"></ellipse>
+                          </g>
+                          <defs>
+                            <linearGradient id="g2" x1="0" x2="1">
+                              <stop offset="0" stop-color="#60A5FA" />
+                              <stop offset="1" stop-color="#2563EB" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+
+                        <!-- portfolio bars + coins -->
+                        <div class="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-4/5">
+                          <div class="portfolio-bars">
+                            <div class="bar h1"></div>
+                            <div class="bar h2"></div>
+                            <div class="bar h3"></div>
+                            <div class="coin">💰</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="seed-caption">Patrimonio real — portafolios y ahorro gradual</div>
+                    </div>
+                  </div>
+                  <div class="mt-3 text-xs text-white/50">La izquierda muestra la experiencia y hábitos que el juego enseña; la derecha muestra cómo, con el tiempo, pequeños aportes y diversificación pueden convertirse en patrimonio real.</div>
+                </div>
+
                 <div class="mt-5 flex gap-3">
                   <button id="btnDemoCard" class="w-full px-4 py-3 rounded-xl bg-white text-fin-bg font-semibold hover:bg-white/90 transition">
                     Probar demo ahora
@@ -212,6 +337,19 @@
             <p class="mt-3 text-white/70 leading-relaxed">
               En el colegio no se enseña educación financiera real. Los niños aprenden tarde (o aprenden mal).
               Y muchos padres no saben cómo enseñar inversión sin riesgo.
+            </p>
+
+            <!-- New expanded argument about the generational gap -->
+            <p class="mt-4 text-white/70 leading-relaxed">
+              Hemos escuchado a muchos jóvenes que, al salir de la universidad o empezar su primer trabajo, desearon
+              que sus familias les hubiesen dado un punto de partida distinto: un portafolio (aunque pequeño),
+              diversificado y con orientación. Ese capital inicial, sumado a hábitos y conocimiento, permite experimentar,
+              aprender sin riesgos graves y aprovechar el tiempo a favor del crecimiento.
+            </p>
+
+            <p class="mt-3 text-white/70 leading-relaxed">
+              FinSeed busca cerrar esa brecha: no solo enseñar, sino acompañar la creación responsable de patrimonio,
+              con control parental y simulaciones antes de dar pasos reales.
             </p>
           </div>
           <div class="grid gap-3">
@@ -363,7 +501,7 @@
                   </div>
                   <div>
                     <label class="text-xs text-white/60">Edad del hijo/a</label>
-                    <input id="kidAge" type="number" min="4" max="18" class="mt-1 w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-white/30" placeholder="8 - 18" />
+                    <input id="kidAge" type="number" min="4" max="18" class="mt-1 w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-white/30" placeholder="Edad (ej: 10)" />
                   </div>
                 </div>
 
@@ -479,7 +617,7 @@
             </div>
             <div>
               <label class="text-xs text-white/60">Edad hijo/a</label>
-              <input id="mKidAge" type="number" min="4" max="18" class="mt-1 w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-white/30" placeholder="8 - 18" />
+              <input id="mKidAge" type="number" min="4" max="18" class="mt-1 w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-white/30" placeholder="Edad (ej: 10)" />
             </div>
           </div>
 
@@ -540,6 +678,7 @@
 
       function bindLeadForm(formId, map) {
         const form = $(formId);
+        if (!form) return;
         form.addEventListener("submit", async (e) => {
           e.preventDefault();
           const lead = map();
@@ -588,6 +727,27 @@
 
       // Track demo interest
       track("page_view");
+
+      // Animation: trigger seed/tree growth when visible
+      (function () {
+        const seedsContainer = document.getElementById('seeds');
+        if (!seedsContainer) return;
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              seedsContainer.classList.add('grow');
+              // small staged reveal for portfolio coin
+              setTimeout(() => {
+                seedsContainer.querySelectorAll('.coin').forEach(c => c.style.opacity = '1');
+              }, 1000);
+              observer.disconnect();
+            }
+          });
+        }, { threshold: 0.35 });
+
+        observer.observe(seedsContainer);
+      })();
     </script>
   </body>
 </html>
