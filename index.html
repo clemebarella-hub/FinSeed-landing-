@@ -165,6 +165,63 @@
       .bar { width:14px; }
     }
   </style>
+    <style>
+  /* ================================
+     FIX CONTRASTE (premium + legible)
+     Sobrescribe clases white/xx que quedaron del diseño oscuro
+     ================================ */
+
+  /* Texto: donde antes era blanco translúcido → ahora verde/oscuro legible */
+  .text-white { color: #0F2F1E !important; }                 /* fin.text */
+  .text-white\/90 { color: #0F2F1E !important; }
+  .text-white\/80 { color: #0F2F1E !important; }
+  .text-white\/70 { color: #4B6B5A !important; }            /* fin.textSoft */
+  .text-white\/60 { color: #6F8F7D !important; }            /* fin.textMuted */
+  .text-white\/50 { color: #6F8F7D !important; }
+
+  /* Bordes: donde antes era blanco translúcido */
+  .border-white\/15 { border-color: rgba(15,47,30,0.12) !important; }
+  .border-white\/10 { border-color: rgba(15,47,30,0.12) !important; }
+  .border-white\/6  { border-color: rgba(15,47,30,0.12) !important; }
+
+  /* Fondos: donde antes era white/xx translúcido → ahora verdes suaves */
+  .bg-white\/5  { background-color: rgba(207,230,214,0.55) !important; } /* fin.soft/55 */
+  .bg-white\/10 { background-color: rgba(207,230,214,0.85) !important; } /* fin.soft */
+  .bg-white\/15 { background-color: rgba(220,234,211,0.85) !important; } /* fin.panel-ish */
+
+  /* Header sticky: si quedó muy transparente, dale un poco más de cuerpo */
+  header.sticky {
+    background-color: rgba(220,234,211,0.78) !important; /* fin.panel/78 */
+    border-bottom-color: rgba(15,47,30,0.12) !important;
+  }
+
+  /* Links del nav: que se noten */
+  nav a { color: rgba(75,107,90,0.95) !important; }        /* fin.textSoft */
+  nav a:hover { color: #0F2F1E !important; }               /* fin.text */
+
+  /* Inputs: que no se vean “lavados” */
+  input, select, textarea {
+    color: #0F2F1E !important;
+  }
+  input::placeholder, textarea::placeholder {
+    color: rgba(111,143,125,0.95) !important;
+  }
+
+  /* Botones principales que eran blancos con texto claro: mejora contraste */
+  button.bg-white {
+    background-color: #1F5E3B !important;  /* fin.primary */
+    color: #ffffff !important;
+  }
+  button.bg-white:hover {
+    background-color: #174A2E !important;  /* fin.primaryDark */
+  }
+
+  /* “Badge” del hero (Cupos limitados…) si quedó muy pálido */
+  .rounded-full.bg-white\/5.border-white\/10 {
+    background-color: rgba(220,234,211,0.72) !important;
+    border-color: rgba(15,47,30,0.12) !important;
+  }
+</style>
 </head>
 
   <body class="bg-fin-bg text-fin-text font-sans">
