@@ -414,6 +414,40 @@ h1 {
     max-width: 100% !important;
   }
 }
+      /* =========================
+   Fix mobile seeds section (no overflow)
+   ========================= */
+@media (max-width: 520px) {
+  /* apilar en columna para que no se corte */
+  .seeds-wrap {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1.25rem !important;
+  }
+
+  .seed-card {
+    width: 100% !important;
+    min-width: 0 !important; /* clave: elimina el empuje horizontal */
+    padding: 0.75rem !important;
+  }
+
+  /* centra y reduce un poco el canvas visual */
+  .seed-visual {
+    height: 220px !important;
+  }
+
+  /* que las ilustraciones no se salgan */
+  .branches,
+  svg {
+    max-width: 100% !important;
+  }
+
+  /* texto debajo: evita corte raro */
+  .seed-caption {
+    padding: 0 0.25rem;
+    text-align: center;
+  }
+}
 </style>
 </head>
 
