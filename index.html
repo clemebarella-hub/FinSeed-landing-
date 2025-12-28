@@ -448,6 +448,56 @@ h1 {
     text-align: center;
   }
 }
+      /* =========================
+   iPhone/Android FIX definitivo para la sección #seeds
+   (evita el corte lateral)
+   ========================= */
+@media (max-width: 520px) {
+  /* Bloque completo */
+  #seeds {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 1.25rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Cada tarjeta */
+  #seeds .seed-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;   /* CLAVE: mata el empuje */
+    flex: 1 1 auto !important;
+    padding: 0.75rem !important;
+  }
+
+  /* Evita que el visual interno empuje */
+  #seeds .seed-visual {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  /* Cualquier SVG/branches dentro: no puede exceder el ancho */
+  #seeds svg,
+  #seeds .branches {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* El texto debajo centrado y sin corte */
+  #seeds .seed-caption {
+    text-align: center !important;
+    padding: 0 0.25rem !important;
+  }
+}
+
+/* Extra: por si el overflow viene de otro lado del hero/card */
+html, body {
+  overflow-x: hidden !important;
+}
 </style>
 </head>
 
