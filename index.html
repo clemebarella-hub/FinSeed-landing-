@@ -287,6 +287,74 @@
       max-width: 28rem !important;
     }
   }
+      /* =========================
+   Mobile fix (iPhone/Android)
+   Pegar al FINAL del <style>
+   ========================= */
+
+@media (max-width: 480px) {
+
+  /* HERO: reduce padding vertical para que no ocupe toda la pantalla */
+  main#top section.gridGlow .mx-auto.max-w-6xl.px-4.py-14.md\:py-20.relative {
+    padding-top: 2.25rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+
+  /* TÍTULO (H1): más chico y compacto en móvil */
+  main#top section.gridGlow h1 {
+    font-size: 2.25rem !important;   /* ~36px */
+    line-height: 1.05 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  /* Subtítulo del H1 (el <span class="block ...">) */
+  main#top section.gridGlow h1 span {
+    font-size: 2.05rem !important;
+    line-height: 1.05 !important;
+    opacity: 0.92;
+  }
+
+  /* Párrafos del hero: más legibles y menos altos */
+  main#top section.gridGlow p.mt-5,
+  main#top section.gridGlow p.mt-4 {
+    font-size: 1rem !important;
+    line-height: 1.55 !important;
+    margin-top: 0.85rem !important;
+  }
+
+  /* BOTONES del hero: tamaño normal */
+  main#top section.gridGlow .mt-8.flex.flex-col.sm\:flex-row.gap-3 {
+    margin-top: 1.15rem !important;
+    gap: 0.65rem !important;
+  }
+
+  main#top section.gridGlow .mt-8.flex.flex-col.sm\:flex-row.gap-3 button,
+  main#top section.gridGlow .mt-8.flex.flex-col.sm\:flex-row.gap-3 a {
+    padding-top: 0.9rem !important;
+    padding-bottom: 0.9rem !important;
+    font-size: 1rem !important;
+    border-radius: 1rem !important;
+  }
+
+  /* CHIPS (Aprendizaje gamificado, etc): más compactos */
+  main#top section.gridGlow .mt-6.flex.flex-wrap.gap-2.text-sm span {
+    font-size: 0.85rem !important;
+    padding: 0.45rem 0.75rem !important;
+  }
+
+  /* HEADER sticky: más bajo (gana espacio) */
+  header .mx-auto.max-w-6xl.px-4.py-3 {
+    padding-top: 0.55rem !important;
+    padding-bottom: 0.55rem !important;
+  }
+
+  /* Botón “Ver demo” del header: más compacto */
+  #btnDemoTop {
+    padding: 0.55rem 0.9rem !important;
+    border-radius: 999px !important;
+    font-size: 0.95rem !important;
+  }
+}
 </style>
 </head>
 
