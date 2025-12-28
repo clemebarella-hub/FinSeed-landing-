@@ -1,124 +1,173 @@
 <!doctype html>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>FinSeed — Educación financiera para niños y familias</title>
-    <meta name="description" content="FinSeed enseña a niños y adolescentes a entender el dinero, invertir con criterio y crear hábitos financieros sólidos, junto a sus familias." />
-    <meta name="theme-color" content="#0B0F1A" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FinSeed — Educación financiera para niños y familias</title>
+  <meta
+    name="description"
+    content="FinSeed combina educación financiera e inversión en un solo lugar."
+  />
+  <meta name="theme-color" content="#1F5E3B" />
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="FinSeed — Educación financiera para niños y familias" />
-    <meta property="og:description" content="Aprendizaje gamificado, simulación sin riesgo e inversión gradual con control parental." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://finseed.cl" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="FinSeed — Educación financiera para niños y familias" />
+  <meta property="og:description" content="Aprendizaje gamificado, simulación sin riesgo e inversión guiada con acompañamiento familiar." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://finseed.cl" />
 
-    <!-- Tailwind (CDN) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ["ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica", "Arial"],
-            },
-            colors: {
-              fin: {
-                bg: "#0B0F1A",
-                panel: "#101826",
-                line: "rgba(255,255,255,0.10)",
-                soft: "rgba(255,255,255,0.06)",
-                mint: "#34D399",
-                sky: "#60A5FA",
-                pink: "#F472B6",
-                amber: "#F59E0B",
-              },
-            },
-            boxShadow: {
-              glow: "0 0 0 1px rgba(255,255,255,0.08), 0 20px 60px rgba(0,0,0,0.55)",
+  <!-- Preconnect (mejora carga del iframe Google Form) -->
+  <link rel="preconnect" href="https://docs.google.com" />
+  <link rel="preconnect" href="https://www.google.com" />
+
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica", "Arial"],
+          },
+          colors: {
+            fin: {
+              /* Backgrounds */
+              bg: "#EAF4E3",
+              panel: "#DCEAD3",
+              soft: "#CFE6D6",
+              line: "rgba(15,47,30,0.12)",
+
+              /* Brand */
+              primary: "#1F5E3B",
+              primaryDark: "#174A2E",
+              primarySoft: "#2F7A4E",
+
+              /* Accents / states */
+              success: "#3FA66A",
+              accent: "#7BCF9B",
+
+              /* Text */
+              text: "#0F2F1E",
+              textSoft: "#4B6B5A",
+              textMuted: "#6F8F7D",
             },
           },
+          boxShadow: {
+            /* Premium glow: menos negro, más natural */
+            glow: "0 1px 0 rgba(255,255,255,0.35), 0 0 0 1px rgba(15,47,30,0.10), 0 22px 60px rgba(15,47,30,0.14)",
+            soft: "0 0 0 1px rgba(15,47,30,0.08), 0 18px 45px rgba(15,47,30,0.10)",
+          },
         },
-      };
-    </script>
+      },
+    };
+  </script>
 
-    <style>
-      html { scroll-behavior: smooth; }
-      .glass {
-        background: rgba(16, 24, 38, 0.65);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.10);
-      }
-      .gridGlow:before{
-        content:"";
-        position:absolute; inset:0;
-        background:
-          radial-gradient(800px 400px at 15% 10%, rgba(96,165,250,0.20), transparent 60%),
-          radial-gradient(700px 350px at 85% 20%, rgba(244,114,182,0.16), transparent 60%),
-          radial-gradient(800px 500px at 50% 85%, rgba(52,211,153,0.14), transparent 60%),
-          linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
-        pointer-events:none;
-      }
-      /* simplified noise overlay (lightweight) */
-      .noise:after{
-        content:"";
-        position:absolute; inset:0;
-        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
-        opacity:.35; mix-blend-mode: overlay; pointer-events:none;
-      }
+  <style>
+    html { scroll-behavior: smooth; }
 
-      /* Seed / tree visuals */
-      .seeds-wrap { display:flex; gap:1rem; align-items:flex-end; justify-content:center; }
-      .seed-card { width:48%; min-width:240px; position:relative; padding:1rem; }
-      .seed-visual { height:220px; display:flex; align-items:flex-end; justify-content:center; position:relative; }
-      .seed {
-        width:64px; height:64px; border-radius:999px; background: linear-gradient(180deg,#5A8AFF,#2E4CFF);
-        display:flex; align-items:center; justify-content:center; color:white; font-size:22px;
-        transform-origin:50% 100%;
-        transition: transform 700ms cubic-bezier(.2,.9,.2,1), opacity 350ms;
-        opacity:0;
-      }
-      .trunk {
-        position:absolute; bottom:48px; width:12px; height:0; background:linear-gradient(#8B5A2B,#5C3A21);
-        border-radius:6px; left:50%; transform:translateX(-50%); transform-origin:bottom;
-      }
-      .branches {
-        position:absolute; bottom:calc(48px + 2px); opacity:0; transform:scale(0.6);
-        transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.9,.2,1);
-      }
-      .leaf {
-        width:40px; height:24px; background:linear-gradient(180deg,#34D399,#10B981); border-radius:20px;
-        transform-origin:center; opacity:0;
-      }
+    /* --- Premium Glass --- */
+    .glass{
+      background: rgba(220, 234, 211, 0.78);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(15, 47, 30, 0.10);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.35) inset;
+    }
 
-      /* portfolio growth animation (bars + coins) */
-      .portfolio-bars { display:flex; gap:6px; align-items:flex-end; height:60px; margin-top:8px; }
-      .bar { width:12px; background:linear-gradient(180deg,#60A5FA,#2563EB); height:0; border-radius:6px; transition:height 900ms cubic-bezier(.2,.9,.2,1); }
-      .coin { display:inline-block; margin-left:6px; opacity:0; transform:translateY(6px); transition:opacity 400ms, transform 400ms; }
+    /* --- Premium Background Glow (sutil) --- */
+    .gridGlow:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(900px 520px at 18% 12%, rgba(31,94,59,0.12), transparent 62%),
+        radial-gradient(780px 420px at 82% 18%, rgba(123,207,155,0.12), transparent 62%),
+        radial-gradient(900px 560px at 50% 92%, rgba(63,166,106,0.10), transparent 66%),
+        linear-gradient(to bottom, rgba(15,47,30,0.035), transparent 55%);
+      filter: saturate(0.92);
+      pointer-events:none;
+    }
 
-      /* trigger classes */
-      .grow .seed { transform: translateY(-14px) scale(1.08); opacity:1; }
-      .grow .trunk { height:84px; }
-      .grow .branches { opacity:1; transform:scale(1); }
-      .grow .leaf { opacity:1; transform:translateY(0); }
-      .grow .bar.h1 { height:28px; }
-      .grow .bar.h2 { height:42px; }
-      .grow .bar.h3 { height:56px; }
-      .grow .coin { opacity:1; transform:translateY(0); }
+    /* --- Premium noise overlay (casi imperceptible) --- */
+    .noise:after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.20), rgba(15,47,30,0.02));
+      opacity: .22;
+      pointer-events:none;
+    }
 
-      /* captions */
-      .seed-caption { margin-top:10px; text-align:center; color:rgba(255,255,255,0.75); font-size:0.95rem; }
+    /* --- Seed / tree visuals --- */
+    .seeds-wrap { display:flex; gap:1rem; align-items:flex-end; justify-content:center; }
+    .seed-card { width:48%; min-width:240px; position:relative; padding:1rem; }
+    .seed-visual { height:220px; display:flex; align-items:flex-end; justify-content:center; position:relative; }
 
-      @media (min-width: 768px) {
-        .seed-visual { height:260px; }
-        .seed { width:72px; height:72px; font-size:26px; }
-        .trunk { width:14px; }
-        .bar { width:14px; }
-      }
-    </style>
-  </head>
+    .seed{
+      width:64px; height:64px; border-radius:999px;
+      background: linear-gradient(180deg, #2F7A4E, #174A2E);
+      display:flex; align-items:center; justify-content:center;
+      color:white; font-size:22px;
+      transform-origin:50% 100%;
+      transition: transform 700ms cubic-bezier(.2,.9,.2,1), opacity 350ms;
+      opacity:0;
+      box-shadow: 0 10px 24px rgba(15,47,30,0.16);
+    }
 
-  <body class="bg-fin-bg text-white font-sans">
+    .trunk{
+      position:absolute; bottom:48px; width:12px; height:0;
+      background: linear-gradient(#7A5A3A, #4A3526);
+      border-radius:6px; left:50%;
+      transform:translateX(-50%);
+      transform-origin:bottom;
+    }
+
+    .branches{
+      position:absolute; bottom:calc(48px + 2px);
+      opacity:0; transform:scale(0.6);
+      transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.9,.2,1);
+    }
+
+    .leaf{
+      width:40px; height:24px;
+      background: linear-gradient(180deg, #3FA66A, #1F5E3B);
+      border-radius:20px;
+      transform-origin:center;
+      opacity:0;
+    }
+
+    /* portfolio growth */
+    .portfolio-bars { display:flex; gap:6px; align-items:flex-end; height:60px; margin-top:8px; }
+    .bar{
+      width:12px;
+      background: linear-gradient(180deg, #7BCF9B, #1F5E3B);
+      height:0;
+      border-radius:6px;
+      transition:height 900ms cubic-bezier(.2,.9,.2,1);
+      box-shadow: 0 10px 22px rgba(15,47,30,0.10);
+    }
+    .coin{ display:inline-block; margin-left:6px; opacity:0; transform:translateY(6px); transition:opacity 400ms, transform 400ms; }
+
+    /* trigger classes */
+    .grow .seed { transform: translateY(-14px) scale(1.08); opacity:1; }
+    .grow .trunk { height:84px; }
+    .grow .branches { opacity:1; transform:scale(1); }
+    .grow .leaf { opacity:1; transform:translateY(0); }
+    .grow .bar.h1 { height:28px; }
+    .grow .bar.h2 { height:42px; }
+    .grow .bar.h3 { height:56px; }
+    .grow .coin { opacity:1; transform:translateY(0); }
+
+    .seed-caption { margin-top:10px; text-align:center; color: rgba(75,107,90,0.95); font-size:0.95rem; }
+
+    @media (min-width: 768px) {
+      .seed-visual { height:260px; }
+      .seed { width:72px; height:72px; font-size:26px; }
+      .trunk { width:14px; }
+      .bar { width:14px; }
+    }
+  </style>
+</head>
+
+  <body class="bg-fin-bg text-fin-text font-sans">
     <!-- Top bar -->
     <header class="sticky top-0 z-40 border-b border-fin-line bg-fin-bg/70 backdrop-blur">
       <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
