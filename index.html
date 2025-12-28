@@ -355,6 +355,65 @@
     font-size: 0.95rem !important;
   }
 }
+      /* =========================
+   iPhone fix: evitar corte del H1 + overflow horizontal
+   Pegar al FINAL del <style>
+   ========================= */
+
+/* 1) Mata cualquier overflow horizontal global */
+html, body {
+  overflow-x: hidden !important;
+  width: 100%;
+}
+
+/* 2) Evita que cualquier hijo empuje el layout más ancho que la pantalla */
+main, section, header, .mx-auto, .max-w-6xl {
+  max-width: 100% !important;
+}
+
+/* 3) H1: fuerza wrap y evita que Safari lo “recorte” */
+h1 {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* 4) En móvil: el grid debe ser 1 columna sí o sí */
+@media (max-width: 640px) {
+  /* tu hero tiene un grid md:grid-cols-2, pero forzamos layout por si algo lo rompe */
+  main#top section.gridGlow .grid {
+    display: block !important;
+  }
+
+  /* Asegura que el contenedor del título no tenga overflow */
+  main#top section.gridGlow {
+    overflow-x: hidden !important;
+  }
+
+  /* Ajuste fino de título para que no “tope” con el borde derecho */
+  main#top section.gridGlow h1 {
+    font-size: 2.15rem !important;
+    line-height: 1.06 !important;
+    letter-spacing: -0.02em !important;
+    padding-right: 0.15rem; /* micro padding para Safari */
+  }
+
+  /* El span del subtítulo también */
+  main#top section.gridGlow h1 span {
+    font-size: 1.95rem !important;
+    line-height: 1.06 !important;
+  }
+
+  /* 5) Si el panel derecho (glass) tiene algo que empuja, lo contenemos */
+  .glass {
+    max-width: 100% !important;
+  }
+
+  /* 6) SVG/ilustraciones y wraps: que nunca excedan el ancho */
+  svg, iframe, img {
+    max-width: 100% !important;
+  }
+}
 </style>
 </head>
 
