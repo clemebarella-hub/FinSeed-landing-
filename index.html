@@ -222,6 +222,72 @@
     border-color: rgba(15,47,30,0.12) !important;
   }
 </style>
+    <style>
+  /* ================================
+     MOBILE FIX: Hero legible y premium
+     ================================ */
+
+  @media (max-width: 480px) {
+    /* 1) Reduce altura y espacio del hero */
+    .heroWrap {
+      padding-top: 2.2rem !important;
+      padding-bottom: 2.2rem !important;
+    }
+
+    /* 2) Tipografía del título: evita que se “coma” la pantalla */
+    .heroTitle {
+      font-size: 2.35rem !important;   /* ~37px */
+      line-height: 1.05 !important;
+      letter-spacing: -0.02em !important;
+    }
+
+    /* 3) Subtítulos / párrafos: más compactos y legibles */
+    .heroLead {
+      font-size: 1.02rem !important;
+      line-height: 1.55 !important;
+      margin-top: 0.9rem !important;
+    }
+    .heroSub {
+      font-size: 0.98rem !important;
+      line-height: 1.55 !important;
+      margin-top: 0.75rem !important;
+    }
+
+    /* 4) Botones: que no se vean gigantes y que respiren */
+    .heroCtas {
+      margin-top: 1.15rem !important;
+      gap: 0.65rem !important;
+    }
+    .heroCtas .ctaBtn {
+      padding-top: 0.9rem !important;
+      padding-bottom: 0.9rem !important;
+      border-radius: 1rem !important;
+      font-size: 1rem !important;
+    }
+
+    /* 5) Chips/badges: mejor wrap y tamaño */
+    .heroChips {
+      margin-top: 1rem !important;
+      gap: 0.5rem !important;
+    }
+    .heroChips span {
+      font-size: 0.85rem !important;
+      padding: 0.45rem 0.75rem !important;
+      border-radius: 999px !important;
+    }
+
+    /* 6) Header sticky: reduce altura en mobile */
+    header .px-4.py-3 {
+      padding-top: 0.55rem !important;
+      padding-bottom: 0.55rem !important;
+    }
+
+    /* 7) Evita que el texto quede “muy ancho” (fatiga visual) */
+    .heroTextBlock {
+      max-width: 28rem !important;
+    }
+  }
+</style>
 </head>
 
   <body class="bg-fin-bg text-fin-text font-sans">
